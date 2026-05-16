@@ -2,38 +2,29 @@ import json
 from django.conf import settings
 from django.http import HttpResponse
 from django.template import loader
+from places.models import Place
 
 
 def show_map(request):
+    places = Place.objects.all()
+    features = []
+    for place in places:
+        feature = {}
+        feature["type"] = "Feature"
+        feature["geometry"] = {}
+        feature["geometry"]["type"] = "Point"
+        feature["geometry"]["coordinates"] = [place.longitude, place.latitude]
+        feature["properties"] = {}
+        feature["properties"]["title"] = place.title
+        feature["properties"]["placeId"] = place.id
+        feature["properties"]["detailsUrl"] = ""
+        features.append(feature)
+
     geojson_data = {
         "type": "FeatureCollection",
-        "features": [
-            {
-                "type": "Feature",
-                "geometry": {
-                    "type": "Point",
-                    "coordinates": [37.62, 55.793676]
-                },
-                "properties": {
-                    "title": "«Легенды Москвы",
-                    "placeId": "moscow_legends",
-                    "detailsUrl": settings.STATIC_URL + "places/moscow_legends.json"
-                }
-            },
-            {
-                "type": "Feature",
-                "geometry": {
-                    "type": "Point",
-                    "coordinates": [37.64, 55.753676]
-                },
-                "properties": {
-                    "title": "Крыши24.рф",
-                    "placeId": "roofs24",
-                    "detailsUrl": settings.STATIC_URL + "places/roofs24.json"
-                }
-            }
-        ]
+        "features": features
     }
+
     template = loader.get_template('map_temp.html')
     context = {'places_geojson': geojson_data}
     rendered_page = template.render(context, request)
