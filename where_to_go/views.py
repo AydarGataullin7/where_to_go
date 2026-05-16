@@ -3,6 +3,7 @@ from django.conf import settings
 from django.http import HttpResponse
 from django.template import loader
 from places.models import Place
+from django.shortcuts import get_object_or_404
 
 
 def show_map(request):
@@ -17,7 +18,7 @@ def show_map(request):
         feature["properties"] = {}
         feature["properties"]["title"] = place.title
         feature["properties"]["placeId"] = place.id
-        feature["properties"]["detailsUrl"] = ""
+        feature["properties"]["detailsUrl"] = f"/place/{place.id}/"
         features.append(feature)
 
     geojson_data = {
@@ -29,3 +30,8 @@ def show_map(request):
     context = {'places_geojson': geojson_data}
     rendered_page = template.render(context, request)
     return HttpResponse(rendered_page)
+
+
+def place_detail(request, place_id):
+    place = get_object_or_404(Place, pk=place_id)
+    return HttpResponse(place.title)
