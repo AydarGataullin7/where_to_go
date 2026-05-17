@@ -13,7 +13,8 @@ class Place(models.Model):
 
 
 class Images(models.Model):
-    place = models.ForeignKey(Place, on_delete=models.CASCADE)
+    place = models.ForeignKey(
+        Place, on_delete=models.CASCADE, related_name='images')
     image = models.ImageField(upload_to='places_images/')
     order = models.IntegerField(default=0)
 
