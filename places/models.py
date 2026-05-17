@@ -18,5 +18,8 @@ class Images(models.Model):
     image = models.ImageField(upload_to='places_images/')
     order = models.IntegerField(default=0)
 
+    class Meta:
+        ordering = ['order']
+
     def __str__(self):
         return f"{self.order} - {self.place.title}"
