@@ -7,7 +7,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.show_map),
-    path('places/<int:place_id>/', views.place_detail)
+    path('places/<int:place_id>/', views.place_detail, name='place_detail')
 ]
 
 if settings.DEBUG:

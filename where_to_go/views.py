@@ -4,6 +4,7 @@ from django.http import HttpResponse, JsonResponse
 from django.template import loader
 from places.models import Place
 from django.shortcuts import get_object_or_404
+from django.urls import reverse
 
 
 def show_map(request):
@@ -18,7 +19,8 @@ def show_map(request):
         feature["properties"] = {}
         feature["properties"]["title"] = place.title
         feature["properties"]["placeId"] = place.id
-        feature["properties"]["detailsUrl"] = f"/places/{place.id}/"
+        feature["properties"]["detailsUrl"] = reverse(
+            'place_detail', args=[place.id])
         features.append(feature)
 
     geojson_data = {
