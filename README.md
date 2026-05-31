@@ -101,6 +101,47 @@ python manage.py runserver
 - Drag-and-drop сортировка порядка отображения
 - Превью фотографий прямо в админке
 
+## Загрузка данных из JSON
+
+Для наполнения сайта данными используйте management-команду `load_place`. Она скачивает JSON-файл по указанному URL и сохраняет место с фотографиями в базу данных.
+
+### Формат JSON-файла
+
+```json
+{
+    "title": "Название места",
+    "description_short": "Короткое описание",
+    "description_long": "<p>Полное описание с HTML-разметкой</p>",
+    "coordinates": {
+        "lng": 37.64912239999976,
+        "lat": 55.77754550000014
+    },
+    "imgs": ["https://example.com/photo1.jpg", "https://example.com/photo2.jpg"]
+}
+```
+
+### Пример запуска
+
+```bash
+python manage.py load_place https://raw.githubusercontent.com/devmanorg/where-to-go-places/master/places/moscow_legends.json
+```
+
+### Пример вывода
+
+```text
+Loaded: Экскурсионная компания «Легенды Москвы»
+```
+
+### Загрузка нескольких мест
+
+Вы можете загрузить несколько мест, выполнив команду для каждого JSON-файла:
+
+```bash
+python manage.py load_place https://example.com/place1.json
+python manage.py load_place https://example.com/place2.json
+python manage.py load_place https://example.com/place3.json
+```
+
 ## API
 
 ### Получение информации о месте
