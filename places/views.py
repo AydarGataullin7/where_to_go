@@ -2,8 +2,7 @@ import json
 
 from django.conf import settings
 from django.http import HttpResponse, JsonResponse
-from django.shortcuts import get_object_or_404
-from django.template import loader
+from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 
 from places.models import Place
@@ -32,10 +31,7 @@ def show_map(request):
         "features": features
     }
 
-    template = loader.get_template('map_temp.html')
-    context = {'places_geojson': geojson_data}
-    rendered_page = template.render(context, request)
-    return HttpResponse(rendered_page)
+    return render(request, 'map_temp.html', {'places_geojson': geojson_data})
 
 
 def place_detail(request, place_id):
