@@ -24,6 +24,7 @@ class Images(models.Model):
 
     class Meta:
         ordering = ['order']
+        indexes = [models.Index(fields=['order']),]
 
     def __str__(self):
         return f"{self.order} - {self.place.title}"
