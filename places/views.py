@@ -13,16 +13,18 @@ def show_map(request):
     places = Place.objects.all()
     features = []
     for place in places:
-        feature = {}
-        feature["type"] = "Feature"
-        feature["geometry"] = {}
-        feature["geometry"]["type"] = "Point"
-        feature["geometry"]["coordinates"] = [place.longitude, place.latitude]
-        feature["properties"] = {}
-        feature["properties"]["title"] = place.title
-        feature["properties"]["placeId"] = place.id
-        feature["properties"]["detailsUrl"] = reverse(
-            'place_detail', args=[place.id])
+        feature = {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [place.longitude, place.latitude]
+            },
+            "properties": {
+                "title": place.title,
+                "placeId": place.id,
+                "detailsUrl": reverse('place_detail', args=[place.id])
+            }
+        }
         features.append(feature)
 
     geojson_data = {
