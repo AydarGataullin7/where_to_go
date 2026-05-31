@@ -1,10 +1,12 @@
 import json
+
 from django.conf import settings
 from django.http import HttpResponse, JsonResponse
-from django.template import loader
-from places.models import Place
 from django.shortcuts import get_object_or_404
+from django.template import loader
 from django.urls import reverse
+
+from places.models import Place
 
 
 def show_map(request):
