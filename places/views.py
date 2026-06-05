@@ -40,11 +40,10 @@ def place_detail(request, place_id):
         pk=place_id
     )
     images = place.images.all().order_by('order')
-    imgs_urls = []
-    for image in images:
-        image_url = image.image.url
-        full_url = request.build_absolute_uri(image_url)
-        imgs_urls.append(full_url)
+    imgs_urls = [
+        request.build_absolute_uri(image.image.url)
+        for image in images
+    ]
     response_data = {
         "title": place.title,
         "imgs": imgs_urls,
