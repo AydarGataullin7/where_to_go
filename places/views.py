@@ -35,7 +35,10 @@ def show_map(request):
 
 
 def place_detail(request, place_id):
-    place = get_object_or_404(Place, pk=place_id)
+    place = get_object_or_404(
+        Place.objects.prefetch_related('images'),
+        pk=place_id
+    )
     images = place.images.all().order_by('order')
     imgs_urls = []
     for image in images:
