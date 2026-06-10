@@ -14,20 +14,20 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         url = options['url']
         response = requests.get(url)
-        data = response.json()
+        place_data = response.json()
 
         place, created = Place.objects.get_or_create(
-            title=data['title'],
+            title=place_data['title'],
             defaults={
-                'short_description': data['description_short'],
-                'long_description': data['description_long'],
-                'longitude': float(data['coordinates']['lng']),
-                'latitude': float(data['coordinates']['lat']),
+                'short_description': place_data['description_short'],
+                'long_description': place_data['description_long'],
+                'longitude': float(place_data['coordinates']['lng']),
+                'latitude': float(place_data['coordinates']['lat']),
             }
 
         )
 
-        for img_url in data['imgs']:
+        for img_url in place_data['imgs']:
             img_response = requests.get(img_url)
             image = Images(place=place)
             image.image.save(img_url.split(
