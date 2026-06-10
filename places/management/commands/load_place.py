@@ -35,10 +35,12 @@ class Command(BaseCommand):
             try:
                 img_response = requests.get(img_url)
                 img_response.raise_for_status()
-                image = Images(place=place)
-                image.image.save(
-                    img_url.split('/')[-1],
-                    ContentFile(img_response.content)
+                Images.objects.create(
+                    place=place,
+                    image=ContentFile(
+                        img_response.content,
+                        name=img_url.split('/')[-1]
+                    )
                 )
             except requests.exceptions.RequestException as e:
                 self.stdout.write(self.style.ERROR(
